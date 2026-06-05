@@ -42,16 +42,16 @@ function LandingPage() {
               SCORM-ready • Built for enterprise training
             </span>
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Learn Smarter with Our{" "}
+              Interactive Learning Powered by{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{ backgroundImage: "var(--gradient-primary)" }}
               >
-                Interactive LMS
+                Alogic Data
               </span>
             </h1>
             <p className="mt-5 text-lg text-muted-foreground sm:text-xl">
-              Experience engaging digital learning through interactive SCORM-based courses.
+              Experience modern SCORM-based digital learning with a clean, engaging, and professional LMS interface.
             </p>
           </div>
 

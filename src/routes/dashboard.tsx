@@ -68,7 +68,7 @@ function DashboardPage() {
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Alogic Data LMS Dashboard</h1>
           <p className="mt-1 text-muted-foreground">Overview of your learning platform.</p>
         </div>
 
