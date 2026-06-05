@@ -18,7 +18,7 @@ import { dummyCourses } from "@/lib/dummy-courses";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — LearnSphere" },
+      { title: "Dashboard — Alogic Data" },
       { name: "description", content: "Manage courses, uploads, and platform analytics." },
     ],
   }),
@@ -55,7 +55,7 @@ function DashboardPage() {
             >
               <GraduationCap className="h-5 w-5" />
             </span>
-            <span className="text-lg font-semibold text-foreground">LearnSphere Admin</span>
+            <span className="text-lg font-semibold text-foreground">Alogic Data Admin</span>
           </Link>
           <Link to="/">
             <Button variant="ghost" size="sm">
@@ -68,7 +68,7 @@ function DashboardPage() {
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Alogic Data LMS Dashboard</h1>
           <p className="mt-1 text-muted-foreground">Overview of your learning platform.</p>
         </div>
 

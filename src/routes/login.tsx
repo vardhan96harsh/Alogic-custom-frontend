@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — LearnSphere" },
-      { name: "description", content: "Sign in to your LearnSphere admin dashboard." },
+      { title: "Login — Alogic Data" },
+      { name: "description", content: "Sign in to your Alogic Data admin dashboard." },
     ],
   }),
   component: LoginPage,
@@ -41,7 +41,7 @@ function LoginPage() {
           >
             <GraduationCap className="h-5 w-5" />
           </span>
-          <span className="text-lg font-semibold text-foreground">LearnSphere</span>
+          <span className="text-lg font-semibold text-foreground">Alogic Data</span>
         </Link>
 
         <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-elevated)]">

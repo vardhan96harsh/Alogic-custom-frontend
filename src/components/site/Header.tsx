@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// NOTE: Update COMPANY_WEBSITE to your main marketing site URL.
+// NOTE: Update COMPANY_WEBSITE to the Alogic Data corporate site URL.
 const COMPANY_WEBSITE = "https://example.com";
 
 export function Header() {
@@ -13,17 +12,17 @@ export function Header() {
           href={COMPANY_WEBSITE}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-2 group"
-          aria-label="Go to main company website"
+          className="group flex items-baseline gap-1"
+          aria-label="Alogic Data — visit company website"
         >
+          <span className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+            Alogic
+          </span>
           <span
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground shadow-[var(--shadow-soft)]"
+            className="text-xl font-bold tracking-tight bg-clip-text text-transparent"
             style={{ backgroundImage: "var(--gradient-primary)" }}
           >
-            <GraduationCap className="h-5 w-5" />
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
-            LearnSphere
+            Data
           </span>
         </a>
 
