@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScormPreview } from "@/components/site/ScormPreview";
 import { CourseCard } from "@/components/site/CourseCard";
-import { dummyCourses } from "@/lib/dummy-courses";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Loader2 } from "lucide-react";
+import { CoursesAPI } from "@/lib/api";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,6 +27,13 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingPage() {
+  const { data: courses, isLoading, error } = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => (await CoursesAPI.list()).data,
+  });
+
+  const featured = courses?.[0] ?? null;
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
@@ -56,13 +64,13 @@ function LandingPage() {
           </div>
 
           <div className="mt-14">
-            <ScormPreview />
+            <ScormPreview course={featured} />
           </div>
         </div>
       </section>
 
       {/* Courses */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+      <section id="courses" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
         <div className="mb-10 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-end">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -73,11 +81,30 @@ function LandingPage() {
             </p>
           </div>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {dummyCourses.map((c) => (
-            <CourseCard key={c.id} course={c} />
-          ))}
-        </div>
+
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20 text-muted-foreground">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            Loading courses…
+          </div>
+        ) : error ? (
+          <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
+            Unable to load courses. Make sure the backend is running at the configured API URL.
+          </div>
+        ) : !courses || courses.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border bg-card/50 p-12 text-center">
+            <p className="text-lg font-medium text-foreground">No courses uploaded yet.</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Upload your first SCORM course from the admin dashboard to see it here.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {courses.map((c) => (
+              <CourseCard key={c._id} course={c} />
+            ))}
+          </div>
+        )}
       </section>
 
       <Footer />
