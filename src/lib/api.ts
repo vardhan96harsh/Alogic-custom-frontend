@@ -55,10 +55,8 @@ export const CoursesAPI = {
   get: (id: string) => api.get<ApiCourse>(`/api/courses/${id}`),
   stats: () => api.get<DashboardStats>("/api/courses/stats/dashboard"),
   upload: (data: FormData) =>
-    api.post<ApiCourse>("/api/courses/upload", data, {
-      // Let the browser set the multipart boundary automatically.
-      headers: { "Content-Type": undefined as unknown as string },
-    }),
+    // Don't set Content-Type — axios + browser will set multipart/form-data with the correct boundary.
+    api.post<ApiCourse>("/api/courses/upload", data),
 };
 
 // ----- Auth helpers -----
