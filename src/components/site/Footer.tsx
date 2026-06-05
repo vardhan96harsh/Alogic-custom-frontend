@@ -12,7 +12,7 @@ export function Footer() {
             >
               <GraduationCap className="h-4 w-4" />
             </span>
-            <span className="text-sm font-semibold text-foreground">LearnSphere</span>
+            <span className="text-sm font-semibold text-foreground">Alogic Data</span>
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">About</a>
@@ -21,7 +21,7 @@ export function Footer() {
             <a href="#" className="hover:text-foreground transition-colors">Contact</a>
           </nav>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} LearnSphere. All rights reserved.
+            © {new Date().getFullYear()} Alogic Data. All rights reserved.
           </p>
         </div>
       </div>

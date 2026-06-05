@@ -23,7 +23,7 @@ export function Header() {
             <GraduationCap className="h-5 w-5" />
           </span>
           <span className="text-lg font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
-            LearnSphere
+            Alogic Data
           </span>
         </a>
 

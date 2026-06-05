@@ -9,13 +9,13 @@ import { Sparkles } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "LearnSphere — Interactive SCORM Learning Platform" },
+      { title: "Alogic Data — Interactive SCORM Learning Platform" },
       {
         name: "description",
         content:
           "Premium LMS course preview platform. Experience engaging digital learning through interactive SCORM-based courses.",
       },
-      { property: "og:title", content: "LearnSphere — Interactive SCORM Learning Platform" },
+      { property: "og:title", content: "Alogic Data — Interactive SCORM Learning Platform" },
       {
         property: "og:description",
         content: "Experience engaging digital learning through interactive SCORM-based courses.",
