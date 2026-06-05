@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Users, BookOpen, Eye, Upload, GraduationCap, LogOut } from "lucide-react";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Users, BookOpen, Eye, Upload, GraduationCap, LogOut, Loader2, Play } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { dummyCourses } from "@/lib/dummy-courses";
+import { CoursesAPI, clearAuth, getStoredToken } from "@/lib/api";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -22,30 +24,94 @@ export const Route = createFileRoute("/dashboard")({
       { name: "description", content: "Manage courses, uploads, and platform analytics." },
     ],
   }),
+  // Client-side protection: bounce to /login if no token.
+  beforeLoad: () => {
+    if (typeof window !== "undefined" && !getStoredToken()) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: DashboardPage,
 });
 
-const stats = [
-  { label: "Total Users", value: "2,481", icon: Users },
-  { label: "Total Courses", value: "37", icon: BookOpen },
-  { label: "Total Course Views", value: "18,902", icon: Eye },
-];
-
 function DashboardPage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // Safety net in case beforeLoad was skipped during SSR.
+  useEffect(() => {
+    if (!getStoredToken()) navigate({ to: "/login" });
+  }, [navigate]);
+
+  const statsQuery = useQuery({
+    queryKey: ["dashboard-stats"],
+    queryFn: async () => (await CoursesAPI.stats()).data,
+  });
+
+  const coursesQuery = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => (await CoursesAPI.list()).data,
+  });
+
+  const stats = [
+    { label: "Total Users", value: statsQuery.data?.totalUsers ?? 0, icon: Users },
+    { label: "Total Courses", value: statsQuery.data?.totalCourses ?? 0, icon: BookOpen },
+    { label: "Total Course Views", value: statsQuery.data?.totalViews ?? 0, icon: Eye },
+  ];
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [scormFile, setScormFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
-  const handleUpload = (e: React.FormEvent) => {
+  const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: POST multipart/form-data to /api/courses (thumbnail + SCORM zip)
-    alert("Upload submitted (UI only).");
-    setTitle("");
-    setDescription("");
+    if (!thumbnail || !scormFile) {
+      toast.error("Please choose a thumbnail and a SCORM zip file.");
+      return;
+    }
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("title", title);
+      fd.append("description", description);
+      fd.append("thumbnail", thumbnail);
+      fd.append("scormFile", scormFile);
+
+      await CoursesAPI.upload(fd);
+      toast.success("Course uploaded successfully");
+
+      setTitle("");
+      setDescription("");
+      setThumbnail(null);
+      setScormFile(null);
+      (document.getElementById("thumb") as HTMLInputElement | null)?.value &&
+        ((document.getElementById("thumb") as HTMLInputElement).value = "");
+      (document.getElementById("scorm") as HTMLInputElement | null)?.value &&
+        ((document.getElementById("scorm") as HTMLInputElement).value = "");
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["courses"] }),
+        queryClient.invalidateQueries({ queryKey: ["dashboard-stats"] }),
+      ]);
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ??
+        "Upload failed";
+      toast.error(message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    clearAuth();
+    toast.success("Signed out");
+    navigate({ to: "/login" });
   };
 
   return (
     <div className="min-h-screen bg-muted/30">
-      {/* Top bar */}
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
@@ -57,12 +123,10 @@ function DashboardPage() {
             </span>
             <span className="text-lg font-semibold text-foreground">Alogic Data Admin</span>
           </Link>
-          <Link to="/">
-            <Button variant="ghost" size="sm">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign out
-            </Button>
-          </Link>
+          <Button variant="ghost" size="sm" onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign out
+          </Button>
         </div>
       </header>
 
@@ -72,7 +136,6 @@ function DashboardPage() {
           <p className="mt-1 text-muted-foreground">Overview of your learning platform.</p>
         </div>
 
-        {/* Stat cards */}
         <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {stats.map((s) => (
             <div
@@ -88,12 +151,13 @@ function DashboardPage() {
                   <s.icon className="h-5 w-5" />
                 </span>
               </div>
-              <p className="mt-4 text-3xl font-bold tracking-tight text-foreground">{s.value}</p>
+              <p className="mt-4 text-3xl font-bold tracking-tight text-foreground">
+                {statsQuery.isLoading ? "…" : Number(s.value).toLocaleString()}
+              </p>
             </div>
           ))}
         </section>
 
-        {/* Upload Course */}
         <section className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-[var(--shadow-soft)]">
           <div className="mb-6 flex items-center gap-3">
             <span
@@ -108,7 +172,7 @@ function DashboardPage() {
             </div>
           </div>
           <form onSubmit={handleUpload} className="grid gap-5 md:grid-cols-2">
-            <div className="space-y-2 md:col-span-1">
+            <div className="space-y-2">
               <Label htmlFor="title">Course title</Label>
               <Input
                 id="title"
@@ -118,9 +182,15 @@ function DashboardPage() {
                 required
               />
             </div>
-            <div className="space-y-2 md:col-span-1">
+            <div className="space-y-2">
               <Label htmlFor="thumb">Thumbnail</Label>
-              <Input id="thumb" type="file" accept="image/*" />
+              <Input
+                id="thumb"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setThumbnail(e.target.files?.[0] ?? null)}
+                required
+              />
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="desc">Description</Label>
@@ -134,22 +204,37 @@ function DashboardPage() {
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="scorm">SCORM zip file</Label>
-              <Input id="scorm" type="file" accept=".zip" />
+              <Input
+                id="scorm"
+                type="file"
+                accept=".zip"
+                onChange={(e) => setScormFile(e.target.files?.[0] ?? null)}
+                required
+              />
             </div>
             <div className="md:col-span-2">
               <Button
                 type="submit"
+                disabled={uploading}
                 className="text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
                 style={{ backgroundImage: "var(--gradient-primary)" }}
               >
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Course
+                {uploading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading…
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Course
+                  </>
+                )}
               </Button>
             </div>
           </form>
         </section>
 
-        {/* Course table */}
         <section className="rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] overflow-hidden">
           <div className="border-b border-border p-6">
             <h2 className="text-xl font-semibold text-foreground">Uploaded Courses</h2>
@@ -167,30 +252,57 @@ function DashboardPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {dummyCourses.map((c) => (
-                  <TableRow key={c.id}>
-                    <TableCell className="font-medium text-foreground">{c.title}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.uploadDate}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.views.toLocaleString()}</TableCell>
-                    <TableCell>
-                      <span
-                        className={
-                          "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " +
-                          (c.status === "Published"
-                            ? "bg-primary/10 text-primary"
-                            : "bg-muted text-muted-foreground")
-                        }
-                      >
-                        {c.status}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">
-                        Edit
-                      </Button>
+                {coursesQuery.isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
+                      <Loader2 className="mr-2 inline h-4 w-4 animate-spin" />
+                      Loading courses…
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : !coursesQuery.data || coursesQuery.data.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
+                      No courses uploaded yet.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  coursesQuery.data.map((c) => {
+                    const status = c.status ?? "Published";
+                    return (
+                      <TableRow key={c._id}>
+                        <TableCell className="font-medium text-foreground">{c.title}</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {c.createdAt ? new Date(c.createdAt).toLocaleDateString() : "—"}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {(c.views ?? 0).toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={
+                              "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " +
+                              (status === "Published"
+                                ? "bg-primary/10 text-primary"
+                                : "bg-muted text-muted-foreground")
+                            }
+                          >
+                            {status}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Link
+                            to="/course/$id"
+                            params={{ id: c._id }}
+                            className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                          >
+                            <Play className="h-3.5 w-3.5" />
+                            Open Player
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           </div>

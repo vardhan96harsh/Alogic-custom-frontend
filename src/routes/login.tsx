@@ -1,9 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AuthAPI } from "@/lib/api";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -19,13 +21,31 @@ function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Replace with real auth call (e.g. supabase.auth.signInWithPassword)
-    void email;
-    void password;
-    navigate({ to: "/dashboard" });
+    setErrorMsg(null);
+    setLoading(true);
+    try {
+      const { data } = await AuthAPI.login(email, password);
+      if (!data?.token) throw new Error("Invalid response from server");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user ?? {}));
+      toast.success("Signed in successfully");
+      navigate({ to: "/dashboard" });
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } }; message?: string })?.response?.data
+          ?.message ??
+        (err as { message?: string })?.message ??
+        "Login failed";
+      setErrorMsg(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,17 +92,27 @@ function LoginPage() {
                 required
               />
             </div>
+            {errorMsg && (
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {errorMsg}
+              </p>
+            )}
             <Button
               type="submit"
+              disabled={loading}
               className="w-full text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
               style={{ backgroundImage: "var(--gradient-primary)" }}
             >
-              Login
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Demo only — any credentials will sign you in.
-          </p>
         </div>
       </div>
     </div>
