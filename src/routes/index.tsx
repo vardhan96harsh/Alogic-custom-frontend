@@ -232,11 +232,8 @@ function ComingSoonCard({
         className="flex aspect-[16/10] items-center justify-center"
         style={{ backgroundImage: gradient }}
       >
-        <div
-          className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/80 backdrop-blur shadow-[var(--shadow-soft)]"
-        >
-          <Icon className="h-8 w-8" />
-          <span style={{ display: "none" }}>{iconBg}</span>
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/85 backdrop-blur shadow-[var(--shadow-soft)]">
+          <Icon className="h-8 w-8" style={{ color: iconBg }} />
         </div>
       </div>
       <div className="flex flex-col gap-3 p-5">
