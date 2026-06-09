@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Eye, Loader2 } from "lucide-react";
+import { ArrowLeft, Eye, Loader2, Maximize, Minimize } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { Button } from "@/components/ui/button";
 import { CoursesAPI, assetUrl } from "@/lib/api";
 
 export const Route = createFileRoute("/course/$id")({
