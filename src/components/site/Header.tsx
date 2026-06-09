@@ -1,31 +1,30 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { Calendar, Phone } from "lucide-react";
 
-// Public corporate site for "Alogic Data" — update when the real URL is known.
 const COMPANY_WEBSITE = "https://alogicdata.com";
 
 export function Header() {
-  const handleVisitLms = (e: React.MouseEvent) => {
-    // Scroll to the Featured Courses section on the home page if present.
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
     if (typeof document === "undefined") return;
-    const target = document.getElementById("courses");
-    if (target) {
+    const el = document.getElementById(id);
+    if (el) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-md shadow-[var(--shadow-soft)]">
+    <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-md border-b border-border/60 shadow-[var(--shadow-soft)]">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <a
           href={COMPANY_WEBSITE}
           target="_blank"
           rel="noreferrer"
-          className="group flex items-baseline gap-1"
-          aria-label="Alogic Data — visit company website"
+          className="flex items-baseline gap-1.5"
+          aria-label="Alogic Data"
         >
-          <span className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <span className="text-xl font-bold tracking-tight" style={{ color: "oklch(0.18 0.06 256)" }}>
             Alogic
           </span>
           <span
@@ -44,12 +43,28 @@ export function Header() {
           </Link>
           <Button
             size="sm"
-            onClick={handleVisitLms}
-            className="text-primary-foreground shadow-[var(--shadow-soft)] hover:opacity-95 transition-opacity border-0"
-            style={{ backgroundImage: "var(--gradient-primary)" }}
-            asChild
+            variant="outline"
+            onClick={scrollTo("courses")}
+            className="hidden sm:inline-flex border-primary/30 text-primary hover:bg-primary/5"
           >
-            <a href="#courses">Visit Our LMS</a>
+            Visit Our LMS
+          </Button>
+          <Button
+            size="sm"
+            onClick={scrollTo("cta")}
+            className="hidden md:inline-flex text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
+            style={{ backgroundImage: "var(--gradient-primary)" }}
+          >
+            <Calendar className="mr-1.5 h-3.5 w-3.5" />
+            Get LMS Demo
+          </Button>
+          <Button
+            size="sm"
+            onClick={scrollTo("cta")}
+            className="bg-foreground text-background hover:bg-foreground/90"
+          >
+            <Phone className="mr-1.5 h-3.5 w-3.5" />
+            Contact Us
           </Button>
         </nav>
       </div>
