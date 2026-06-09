@@ -224,7 +224,7 @@ function ComingSoonCard({
   description: string;
   gradient: string;
   iconBg: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
 }) {
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
