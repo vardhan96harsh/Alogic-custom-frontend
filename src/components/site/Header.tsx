@@ -68,7 +68,7 @@ export function Header() {
             </a>
           </Button>
           <Link to="/login">
-            <Button variant="ghost" size="sm" className="text-foreground">
+            <Button variant="ghost" size="sm" className="text-foreground hidden md:block">
               Login
             </Button>
           </Link>

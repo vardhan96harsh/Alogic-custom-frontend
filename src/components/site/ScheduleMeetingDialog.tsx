@@ -67,10 +67,10 @@ export function ScheduleMeetingDialog({
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
+        className="text-primary-foreground border-0 shadow-[var(--shadow-soft)] text-xs lg:text-lg"
         style={{ backgroundImage: "var(--gradient-primary)" }}
       >
-        <Calendar className="mr-2 h-4 w-4" />
+        <Calendar className="lg:mr-2 h-4 w-4" />
         {buttonText}
       </Button>
 

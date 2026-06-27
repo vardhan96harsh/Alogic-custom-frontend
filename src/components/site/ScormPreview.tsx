@@ -46,8 +46,8 @@ export function ScormPreview({ course }: { course?: ApiCourse | null }) {
 
         {/* Bottom content */}
         <div className="absolute inset-x-0 bottom-0 p-6 text-center text-white">
-          <h3 className="text-2xl font-bold drop-shadow">{title}</h3>
-          <p className="mt-1 text-sm text-white/90">
+          <h3 className="text-2xl font-bold drop-shadow hidden ">{title}</h3>
+          <p className="mt-1 text-sm text-white/90 hidden md:block">
             Build skills. Inspire teams. Drive results.
           </p>
           <div className="mt-2 flex items-center justify-center gap-1.5 text-sm">
