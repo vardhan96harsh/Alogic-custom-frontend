@@ -147,124 +147,126 @@ function LandingPage() {
 
 
       {featured && (
-        <section className="bg-white mx-4 sm:mx-6 lg:mx-20 my-6">
-          {/* Tabs */}
-          <div className="flex gap-6 sm:gap-8 overflow-x-auto whitespace-nowrap border-b border-gray-200 mb-4">
-            {[
-              { id: "about", label: "About" },
-              { id: "outcomes", label: "Outcomes" },
-              { id: "curriculum", label: "Curriculum" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`shrink-0 pb-3 sm:pb-4 text-sm font-semibold ${activeTab === tab.id
-                  ? "text-blue-700 border-b-2 border-blue-700"
-                  : "text-gray-700"
-                  }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+    <section className="mx-4 my-8 rounded-2xl border border-gray-200 bg-white p-5 sm:mx-6 sm:p-6 lg:mx-20 lg:p-8">
+  {/* Tabs */}
+  <div className="mb-8 flex gap-8 overflow-x-auto border-b border-gray-200">
+    {[
+      { id: "about", label: "About" },
+      { id: "outcomes", label: "Outcomes" },
+      { id: "curriculum", label: "Curriculum" },
+    ].map((tab) => (
+      <button
+        key={tab.id}
+        onClick={() => setActiveTab(tab.id)}
+        className={`shrink-0 pb-4 text-sm font-bold transition ${
+          activeTab === tab.id
+            ? "border-b-4 border-blue-700 text-blue-700"
+            : "text-gray-600 hover:text-gray-900"
+        }`}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
 
-          {/* ABOUT TAB */}
-          {activeTab === "about" && (
-            <>
-              <div className="mb-6 sm:mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 leading-tight">
-                  {featured.title}
-                </h2>
-                <p className="text-sm sm:text-base text-muted-foreground max-w-3xl leading-relaxed">
-                  {featured.description}
+  {activeTab === "about" && (
+    <div>
+      <div className="mb-8">
+        <h2 className="mb-3 text-2xl font-bold leading-tight text-gray-950 sm:text-3xl">
+          {featured.title}
+        </h2>
+        <p className="max-w-4xl text-sm leading-7 text-gray-600 sm:text-base">
+          {featured.description}
+        </p>
+      </div>
+
+      {featured.whatYouWillLearn?.length > 0 && (
+        <div className="mb-8 rounded-xl border border-gray-200 p-5 sm:p-6">
+          <h3 className="mb-5 text-xl font-bold text-gray-950">
+            What you'll learn
+          </h3>
+
+          <div className="grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
+            {featured.whatYouWillLearn.map((item, idx) => (
+              <div key={idx} className="flex gap-3">
+                <span className="mt-0.5 text-base font-bold text-green-600">
+                  ✓
+                </span>
+                <p className="text-sm leading-6 text-gray-700 sm:text-base">
+                  {item}
                 </p>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-              {featured.whatYouWillLearn?.length > 0 && (
-                <div className="mb-8 sm:mb-10">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5">
-                    What you'll learn
-                  </h3>
+      {featured.skills?.length > 0 && (
+        <div>
+          <h3 className="mb-4 text-xl font-bold text-gray-950">
+            Skills you'll gain
+          </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 sm:gap-y-5">
-                    {featured.whatYouWillLearn.map((item, idx) => (
-                      <div key={idx} className="flex gap-3 sm:gap-4">
-                        <span className="text-green-600 font-bold shrink-0">✓</span>
-                        <p className="text-sm sm:text-base text-gray-800 leading-relaxed">
-                          {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+          <div className="flex flex-wrap gap-2">
+            {featured.skills.map((skill, idx) => (
+              <span
+                key={idx}
+                className="rounded-md bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-800 sm:text-sm"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )}
 
-              {featured.skills?.length > 0 && (
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4">
-                    Skills you'll gain
-                  </h3>
+  {activeTab === "outcomes" && (
+    <div>
+      <h3 className="mb-5 text-xl font-bold text-gray-950 sm:text-2xl">
+        Outcomes
+      </h3>
 
-                  <div className="flex flex-wrap gap-2 sm:gap-3">
-                    {featured.skills.map((skill, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-gray-200 text-gray-800 px-3 sm:px-4 py-2 rounded-lg lg:rounded-full  text-xs sm:text-sm font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
+      <div className="space-y-4">
+        {featured.outcomes?.map((outcome, idx) => (
+          <div key={idx} className="flex gap-3 rounded-xl border border-gray-200 p-4">
+            <span className="mt-0.5 text-base font-bold text-green-600">
+              ✓
+            </span>
+            <p className="text-sm leading-6 text-gray-700 sm:text-base">
+              {outcome}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
 
-          {/* OUTCOMES TAB */}
-          {activeTab === "outcomes" && (
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5">
-                Outcomes
-              </h3>
+  {activeTab === "curriculum" && (
+    <div>
+      <h3 className="mb-5 text-xl font-bold text-gray-950 sm:text-2xl">
+        Course Curriculum
+      </h3>
 
-              <div className="space-y-4">
-                {featured.outcomes?.map((outcome, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <span className="text-green-600 font-bold shrink-0">✓</span>
-                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                      {outcome}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* CURRICULUM TAB */}
-          {activeTab === "curriculum" && (
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5">
-                Course Curriculum
-              </h3>
-
-              <div className="space-y-4">
-                {featured.curriculum?.map((phase, idx) => (
-                  <div
-                    key={idx}
-                    className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-white hover:shadow-md transition"
-                  >
-                    <h4 className="text-sm sm:text-base font-bold mb-2 leading-snug">
-                      Phase {idx + 1}: {phase.phaseTitle}
-                    </h4>
-                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed break-words">
-                      {phase.lessons?.join(" · ")}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </section>
+      <div className="space-y-3">
+        {featured.curriculum?.map((phase, idx) => (
+          <div
+            key={idx}
+            className="rounded-xl border border-gray-200 bg-white p-4"
+          >
+            <h4 className="mb-2 text-sm font-bold text-gray-950 sm:text-base">
+              Phase {idx + 1}: {phase.phaseTitle}
+            </h4>
+            <p className="text-sm leading-6 text-gray-600 sm:text-base">
+              {phase.lessons?.join(" · ")}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
       )
       }
       {/* Featured + Coming Soon */}

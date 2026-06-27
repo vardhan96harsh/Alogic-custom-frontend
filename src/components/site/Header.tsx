@@ -48,15 +48,21 @@ export function Header() {
           >
             Visit Our LMS
           </Button> */}
-          <Button
-            size="sm"
-            onClick={scrollTo("cta")}
-            className="hidden md:inline-flex text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
-            style={{ backgroundImage: "var(--gradient-primary)" }}
-          >
-            <Calendar className="mr-1.5 h-3.5 w-3.5" />
-            Get LMS Demo
-          </Button>
+    
+<div className="hidden md:inline-flex">
+  <ScheduleMeetingDialog
+    trigger={
+      <Button
+        size="sm"
+        className="text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
+        style={{ backgroundImage: "var(--gradient-primary)" }}
+      >
+        <Calendar className="mr-1.5 h-3.5 w-3.5" />
+        Get LMS Demo
+      </Button>
+    }
+  />
+</div>
           <Button
             asChild
             size="sm"
