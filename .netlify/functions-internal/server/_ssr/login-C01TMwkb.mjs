@@ -3,7 +3,7 @@ import { d as useNavigate, L as Link } from "../_libs/tanstack__react-router.mjs
 import { t as toast } from "../_libs/sonner.mjs";
 import { B as Button } from "./button-DjOZMqFS.mjs";
 import { L as Label, I as Input } from "./label-BJaHSwYl.mjs";
-import { A as AuthAPI } from "./router-BB7kjSup.mjs";
+import { A as AuthAPI } from "./router-tZpsLqxg.mjs";
 import { G as GraduationCap, L as LoaderCircle } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";

@@ -185,7 +185,7 @@ function RootComponent() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, { richColors: true, position: "top-right" })
   ] });
 }
-const $$splitComponentImporter$3 = () => import("./login-D35rv8n1.mjs");
+const $$splitComponentImporter$3 = () => import("./login-C01TMwkb.mjs");
 const Route$3 = createFileRoute("/login")({
   head: () => ({
     meta: [{
@@ -197,7 +197,7 @@ const Route$3 = createFileRoute("/login")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-const API_BASE_URL = "http://13.234.217.79:5000";
+const API_BASE_URL = "https://alogiclms.duckdns.org";
 const api = axios.create({
   baseURL: API_BASE_URL
 });
@@ -241,7 +241,7 @@ function clearAuth() {
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("user");
 }
-const $$splitComponentImporter$2 = () => import("./dashboard-BpDAxbRk.mjs");
+const $$splitComponentImporter$2 = () => import("./dashboard-tiWulb0e.mjs");
 const Route$2 = createFileRoute("/dashboard")({
   head: () => ({
     meta: [{
@@ -261,7 +261,7 @@ const Route$2 = createFileRoute("/dashboard")({
   },
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-BsBEPFW4.mjs");
+const $$splitComponentImporter$1 = () => import("./index-mkQffLF-.mjs");
 const Route$1 = createFileRoute("/")({
   head: () => ({
     meta: [{
@@ -273,7 +273,7 @@ const Route$1 = createFileRoute("/")({
   }),
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-const $$splitComponentImporter = () => import("./course._id-DMluLvRX.mjs");
+const $$splitComponentImporter = () => import("./course._id-Ct9ipLgy.mjs");
 const Route = createFileRoute("/course/$id")({
   head: () => ({
     meta: [{

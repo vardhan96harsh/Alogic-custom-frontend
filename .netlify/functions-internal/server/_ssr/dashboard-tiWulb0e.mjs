@@ -4,7 +4,7 @@ import { u as useQueryClient, a as useQuery } from "../_libs/tanstack__react-que
 import { t as toast } from "../_libs/sonner.mjs";
 import { B as Button, c as cn } from "./button-DjOZMqFS.mjs";
 import { L as Label, I as Input } from "./label-BJaHSwYl.mjs";
-import { g as getStoredToken, C as CoursesAPI, c as clearAuth } from "./router-BB7kjSup.mjs";
+import { g as getStoredToken, C as CoursesAPI, c as clearAuth } from "./router-tZpsLqxg.mjs";
 import { U as Users, B as BookOpen, E as Eye, G as GraduationCap, a as LogOut, b as Upload, L as LoaderCircle, P as Play, T as Trash2 } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";
 import "../_libs/tanstack__history.mjs";

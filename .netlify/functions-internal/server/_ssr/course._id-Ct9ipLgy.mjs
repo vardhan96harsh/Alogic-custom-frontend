@@ -1,7 +1,7 @@
 import { j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { L as Link } from "../_libs/tanstack__react-router.mjs";
 import { a as useQuery } from "../_libs/tanstack__react-query.mjs";
-import { R as Route, a as assetUrl, C as CoursesAPI } from "./router-BB7kjSup.mjs";
+import { R as Route, a as assetUrl, C as CoursesAPI } from "./router-tZpsLqxg.mjs";
 import "../_libs/sonner.mjs";
 import { A as ArrowLeft, L as LoaderCircle } from "../_libs/lucide-react.mjs";
 import "../_libs/tanstack__router-core.mjs";

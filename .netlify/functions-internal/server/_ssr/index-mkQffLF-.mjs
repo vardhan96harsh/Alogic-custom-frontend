@@ -2,7 +2,7 @@ import { r as reactExports, j as jsxRuntimeExports } from "../_libs/react.mjs";
 import { a as useQuery } from "../_libs/tanstack__react-query.mjs";
 import { L as Link, d as useNavigate } from "../_libs/tanstack__react-router.mjs";
 import { B as Button } from "./button-DjOZMqFS.mjs";
-import { a as assetUrl, C as CoursesAPI, M as MailAPI } from "./router-BB7kjSup.mjs";
+import { a as assetUrl, C as CoursesAPI, M as MailAPI } from "./router-tZpsLqxg.mjs";
 import { r as reactDomExports } from "../_libs/react-dom.mjs";
 import "../_libs/sonner.mjs";
 import { S as Star, c as ShieldCheck, U as Users, d as Sparkles, e as TrendingUp, L as LoaderCircle, f as UsersRound, g as Target, h as Phone, M as Mail, C as Calendar, P as Play, E as Eye, X, i as User, j as Building2, k as MessageSquare } from "../_libs/lucide-react.mjs";
