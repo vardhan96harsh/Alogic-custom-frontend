@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const API_BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "http://localhost:5000";
 
@@ -57,13 +58,25 @@ export const CoursesAPI = {
   upload: (data: FormData) =>
     // Don't set Content-Type — axios + browser will set multipart/form-data with the correct boundary.
     api.post<ApiCourse>("/api/courses/upload", data),
+     delete: (id: string) => api.delete(`/api/courses/${id}`),
 };
 
 // ----- Auth helpers -----
 export function getStoredToken(): string | null {
   if (typeof window === "undefined") return null;
   return window.localStorage.getItem("token");
+
+
 }
+
+export const MailAPI = {
+  sendDemoRequest: (data: {
+    name: string;
+    email: string;
+    organization: string;
+    message?: string;
+  }) => api.post("/api/mail/demo-request", data),
+};
 
 export function getStoredUser<T = Record<string, unknown>>(): T | null {
   if (typeof window === "undefined") return null;

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Calendar, Phone } from "lucide-react";
+import { ScheduleMeetingDialog } from "@/components/site/ScheduleMeetingDialog";
 
 const COMPANY_WEBSITE = "https://alogicdata.com";
 
@@ -15,7 +16,9 @@ export function Header() {
   };
 
   return (
+    
     <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-md border-b border-border/60 shadow-[var(--shadow-soft)]">
+      
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <a
           href={COMPANY_WEBSITE}
@@ -36,19 +39,15 @@ export function Header() {
         </a>
 
         <nav className="flex items-center gap-2 sm:gap-3">
-          <Link to="/login">
-            <Button variant="ghost" size="sm" className="text-foreground">
-              Login
-            </Button>
-          </Link>
-          <Button
+
+          {/* <Button
             size="sm"
             variant="outline"
             onClick={scrollTo("courses")}
             className="hidden sm:inline-flex border-primary/30 text-primary hover:bg-primary/5"
           >
             Visit Our LMS
-          </Button>
+          </Button> */}
           <Button
             size="sm"
             onClick={scrollTo("cta")}
@@ -59,13 +58,20 @@ export function Header() {
             Get LMS Demo
           </Button>
           <Button
+            asChild
             size="sm"
-            onClick={scrollTo("cta")}
             className="bg-foreground text-background hover:bg-foreground/90"
           >
-            <Phone className="mr-1.5 h-3.5 w-3.5" />
-            Contact Us
+            <a href="mailto:alogicdatavidisha@gmail.com">
+              <Phone className="mr-1.5 h-3.5 w-3.5" />
+              Contact Us
+            </a>
           </Button>
+          <Link to="/login">
+            <Button variant="ghost" size="sm" className="text-foreground">
+              Login
+            </Button>
+          </Link>
         </nav>
       </div>
     </header>

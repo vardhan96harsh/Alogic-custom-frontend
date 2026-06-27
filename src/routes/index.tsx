@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
+// import { Footer } from "@/components/site/Footer";
 import { ScormPreview } from "@/components/site/ScormPreview";
 import { CourseCard } from "@/components/site/CourseCard";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import {
   Star,
   ShieldCheck,
@@ -12,12 +13,15 @@ import {
   TrendingUp,
   Loader2,
   Phone,
-  Calendar,
+ 
   Mail,
   Users2,
   Target,
+  Sparkles,
 } from "lucide-react";
 import { CoursesAPI } from "@/lib/api";
+import { ScheduleMeetingDialog } from "@/components/site/ScheduleMeetingDialog";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,9 +38,20 @@ export const Route = createFileRoute("/")({
 });
 
 function LandingPage() {
-  const { data: courses, isLoading, error } = useQuery({
+
+    const [activeTab, setActiveTab] = useState("about");
+  const { data: courses = [], isLoading, error } = useQuery({
     queryKey: ["courses"],
-    queryFn: async () => (await CoursesAPI.list()).data,
+    queryFn: async () => {
+      const res = await CoursesAPI.list();
+      const data = res.data;
+
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data.courses)) return data.courses;
+      if (Array.isArray(data.data)) return data.data;
+
+      return [];
+    },
   });
 
   const featured = courses?.[0] ?? null;
@@ -44,6 +59,7 @@ function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
+
 
       {/* Hero */}
       <section
@@ -56,8 +72,9 @@ function LandingPage() {
               <Star className="h-3.5 w-3.5 fill-primary text-primary" />
               SCORM-ready • Built for enterprise training
             </span>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-tight">
-              Interactive Learning Powered by{" "}
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-5xl leading-tight">
+              {/* Interactive Learning Powered by{" "} */}
+              Corporate Training Platform by{" "}
               <span
                 className="bg-clip-text text-transparent"
                 style={{ backgroundImage: "var(--gradient-primary)" }}
@@ -65,10 +82,32 @@ function LandingPage() {
                 Alogic Data
               </span>
             </h1>
+
+
             <p className="mt-5 text-lg text-muted-foreground max-w-xl">
               Experience modern SCORM-based digital learning with a clean,
               engaging, and professional LMS interface.
             </p>
+
+            <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-primary/10 bg-white/75 px-5 py-4 shadow-[var(--shadow-soft)] backdrop-blur">
+                <div className="mb-3 h-1 w-10 rounded-full bg-primary" />
+                <h3 className="text-sm font-bold leading-6 text-foreground">
+                  Ready-Made Compliance &
+                  <br />
+                  Professional Development Courses
+                </h3>
+              </div>
+
+              <div className="rounded-2xl border border-primary/10 bg-white/75 px-5 py-4 shadow-[var(--shadow-soft)] backdrop-blur">
+                <div className="mb-3 h-1 w-10 rounded-full bg-primary" />
+                <h3 className="text-sm font-bold leading-6 text-foreground">
+                  Trusted by Companies to
+                  <br />
+                  Train Employees
+                </h3>
+              </div>
+            </div>
 
             <div className="mt-6 flex items-center gap-2">
               <div className="flex text-[oklch(0.78_0.18_85)]">
@@ -80,19 +119,18 @@ function LandingPage() {
               <span className="text-sm text-muted-foreground">(125+ Learners)</span>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm text-foreground">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                High Quality Content
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-primary" />
-                Engaging Learning
-              </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                Measurable Results
-              </div>
+            <div className="mt-7 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-4 text-sm text-foreground sm:grid-cols-4">
+              {[
+                { icon: ShieldCheck, label: "High Quality Content" },
+                { icon: Users, label: "Engaging Learning" },
+                { icon: Sparkles, label: "AI-Powered Learning" },
+                { icon: TrendingUp, label: "Measurable Results" },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <Icon className="h-4 w-4 shrink-0 text-primary" />
+                  <span className="font-medium leading-tight">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -102,6 +140,118 @@ function LandingPage() {
         </div>
       </section>
 
+
+      {featured &&  (
+          <section className="bg-white mx-20 my-4 ">
+            {/* Tabs */}
+            <div className="flex gap-8 border-b border-gray-200 mb-4">
+              {[
+                { id: "about", label: "About" },
+                { id: "outcomes", label: "Outcomes" },
+                { id: "curriculum", label: "Curriculum" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`pb-4 text-sm font-semibold ${activeTab === tab.id
+                      ? "text-blue-700 border-b-2 border-blue-700"
+                      : "text-gray-700"
+                    }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* ABOUT TAB */}
+            {activeTab === "about" && (
+              <>
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-foreground mb-3">
+                    {featured.title}
+                  </h2>
+                  <p className="text-muted-foreground max-w-3xl leading-relaxed">
+                    {featured.description}
+                  </p>
+                </div>
+
+                {featured.whatYouWillLearn?.length > 0 && (
+                  <div className="mb-10">
+                    <h3 className="text-2xl font-bold mb-5">What you'll learn</h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-5">
+                      {featured.whatYouWillLearn.map((item, idx) => (
+                        <div key={idx} className="flex gap-4">
+                          <span className="text-green-600 font-bold">✓</span>
+                          <p className="text-gray-800 leading-relaxed">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {featured.skills?.length > 0 && (
+                  <div>
+                    <h3 className="text-2xl font-bold mb-4">Skills you'll gain</h3>
+
+                    <div className="flex flex-wrap gap-3">
+                      {featured.skills.map((skill, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-gray-200 text-gray-800 px-4 py-2 rounded-full text-sm font-medium"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* OUTCOMES TAB */}
+            {activeTab === "outcomes" && (
+              <div>
+                <h3 className="text-2xl font-bold mb-5">Outcomes</h3>
+
+                <div className="space-y-4">
+                  {featured.outcomes?.map((outcome, idx) => (
+                    <div key={idx} className="flex gap-3">
+                      <span className="text-green-600 font-bold">✓</span>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {outcome}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CURRICULUM TAB */}
+            {activeTab === "curriculum" && (
+              <div>
+                <h3 className="text-2xl font-bold mb-5">Course Curriculum</h3>
+
+                <div className="space-y-4">
+                  {featured.curriculum?.map((phase, idx) => (
+                    <div
+                      key={idx}
+                      className="border border-gray-200 rounded-xl p-5 bg-white hover:shadow-md transition"
+                    >
+                      <h4 className="font-bold mb-2">
+                        Phase {idx + 1}: {phase.phaseTitle}
+                      </h4>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {phase.lessons?.join(" · ")}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )
+      }
       {/* Featured + Coming Soon */}
       <section id="courses" className="bg-background scroll-mt-20">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:px-8 py-20 lg:grid-cols-2">
@@ -138,6 +288,7 @@ function LandingPage() {
             </div>
           </div>
 
+
           {/* Coming Soon */}
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -167,9 +318,13 @@ function LandingPage() {
         </div>
       </section>
 
+
       {/* CTA */}
-      <section id="cta" className="border-t border-border bg-background scroll-mt-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <section
+        id="cta"
+        className="fixed bottom-0 left-0 z-50 w-full border-t border-border bg-background/95 backdrop-blur-md shadow-lg scroll-mt-20"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
           <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
             <div className="flex items-start gap-4">
               <div
@@ -188,27 +343,37 @@ function LandingPage() {
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5">
+              {/* <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5">
                 <Phone className="mr-2 h-4 w-4" />
                 Call Us Now
-              </Button>
+              </Button> */}
               <Button
-                className="text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
-                style={{ backgroundImage: "var(--gradient-primary)" }}
+                asChild
+                variant="outline"
+                className="border-primary/30 text-primary hover:bg-primary/5"
               >
-                <Calendar className="mr-2 h-4 w-4" />
-                Schedule a Meeting
+                <a href="tel:+919876543210">
+                  <Phone className="mr-2 h-4 w-4" />
+                  +91 98765 43210
+                </a>
               </Button>
-              <Button variant="outline" className="border-border">
+              <ScheduleMeetingDialog />
+              {/* <Button variant="outline" className="border-border">
                 <Mail className="mr-2 h-4 w-4" />
                 Contact Us
+              </Button> */}
+              <Button asChild variant="outline" className="border-border">
+                <a href="mailto:alogicdatavidisha@gmail.com">
+                  <Mail className="mr-2 h-4 w-4" />
+                  Contact Us
+                </a>
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
