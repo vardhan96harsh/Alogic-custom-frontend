@@ -150,11 +150,12 @@ function LandingPage() {
     <section className="mx-4 my-8 rounded-2xl border border-gray-200 bg-white p-5 sm:mx-6 sm:p-6 lg:mx-20 lg:p-8">
   {/* Tabs */}
   <div className="mb-8 flex gap-8 overflow-x-auto border-b border-gray-200">
-    {[
-      { id: "about", label: "About" },
-      { id: "outcomes", label: "Outcomes" },
-      { id: "curriculum", label: "Curriculum" },
-    ].map((tab) => (
+{[
+  { id: "about", label: "About" },
+  { id: "outcomes", label: "Outcomes" },
+  { id: "audience", label: "Who this is for" },
+  { id: "curriculum", label: "Curriculum" },
+].map((tab) => (
       <button
         key={tab.id}
         onClick={() => setActiveTab(tab.id)}
@@ -223,49 +224,92 @@ function LandingPage() {
   )}
 
   {activeTab === "outcomes" && (
-    <div>
-      <h3 className="mb-5 text-xl font-bold text-gray-950 sm:text-2xl">
-        Outcomes
-      </h3>
+  <div>
+  <h3 className="mb-3 text-xl font-bold text-gray-950 sm:text-2xl">
+    Outcomes
+  </h3>
 
-      <div className="space-y-4">
-        {featured.outcomes?.map((outcome, idx) => (
-          <div key={idx} className="flex gap-3 rounded-xl border border-gray-200 p-4">
-            <span className="mt-0.5 text-base font-bold text-green-600">
-              ✓
-            </span>
-            <p className="text-sm leading-6 text-gray-700 sm:text-base">
-              {outcome}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+  <p className="mb-5 text-sm leading-6 text-gray-600 sm:text-base">
+    By the end of this course, you'll be able to:
+  </p>
+
+  <ul className="list-disc space-y-3 pl-5">
+    {featured.outcomes?.map((outcome, idx) => (
+      <li
+        key={idx}
+        className="text-sm leading-6 text-gray-700 sm:text-base"
+      >
+        {outcome}
+      </li>
+    ))}
+  </ul>
+</div>
   )}
+{activeTab === "audience" && (
+<div>
+  <h3 className="mb-3 text-xl font-bold text-gray-950 sm:text-2xl">
+    Who this course is for
+  </h3>
 
-  {activeTab === "curriculum" && (
-    <div>
-      <h3 className="mb-5 text-xl font-bold text-gray-950 sm:text-2xl">
-        Course Curriculum
-      </h3>
+  <ul className="list-disc space-y-3 pl-5">
+    {featured.targetAudience?.map((item, idx) => (
+      <li
+        key={idx}
+        className="text-sm leading-6 text-gray-700 sm:text-base"
+      >
+        {item}
+      </li>
+    ))}
+  </ul>
+</div>
+)}
+{activeTab === "curriculum" && (
+  <div>
+    <h3 className="mb-5 text-xl font-bold text-gray-950 sm:text-2xl">
+      Course Curriculum
+    </h3>
 
-      <div className="space-y-3">
-        {featured.curriculum?.map((phase, idx) => (
-          <div
-            key={idx}
-            className="rounded-xl border border-gray-200 bg-white p-4"
-          >
-            <h4 className="mb-2 text-sm font-bold text-gray-950 sm:text-base">
-              Phase {idx + 1}: {phase.phaseTitle}
-            </h4>
-            <p className="text-sm leading-6 text-gray-600 sm:text-base">
-              {phase.lessons?.join(" · ")}
+    <div className="space-y-4">
+      {featured.curriculum?.map((phase, idx) => (
+        <div
+          key={idx}
+          className="rounded-xl border border-gray-200 bg-white p-5"
+        >
+          <h4 className="mb-2 text-base font-bold text-gray-950 sm:text-lg">
+            {phase.phaseTitle}
+          </h4>
+
+          {phase.subtitle && (
+            <p className="mb-3 text-sm font-medium leading-6 text-gray-700 sm:text-base">
+              {phase.subtitle}
             </p>
-          </div>
-        ))}
-      </div>
+          )}
+
+          {phase.goal && (
+            <p className="mb-4 rounded-lg bg-gray-50 p-3 text-sm leading-6 text-gray-700 sm:text-base">
+              <span className="font-bold text-gray-950">Goal:</span>{" "}
+              {phase.goal}
+            </p>
+          )}
+
+          {phase.topics?.length > 0 && (
+            <ul className="list-disc space-y-2 pl-5">
+              {phase.topics.map((topic, topicIdx) => (
+                <li
+                  key={topicIdx}
+                  className="text-sm leading-6 text-gray-700 sm:text-base"
+                >
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </div>
-  )}
+  </div>
+)}
+
 </section>
       )
       }
