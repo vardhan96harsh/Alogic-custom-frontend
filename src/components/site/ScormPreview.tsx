@@ -42,7 +42,7 @@ export function ScormPreview({ course }: { course?: ApiCourse | null }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
         {/* Center play button */}
-        <button
+        {/* <button
           onClick={handleStart}
           disabled={!course}
           className="absolute left-1/2 top-[42%] flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl text-primary-foreground shadow-[var(--shadow-elevated)] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:w-14 lg:h-16 lg:w-16 lg:rounded-2xl"
@@ -50,7 +50,7 @@ export function ScormPreview({ course }: { course?: ApiCourse | null }) {
           aria-label="Play course"
         >
           <Play className="h-5 w-5 fill-current sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
-        </button>
+        </button> */}
 
         {/* Bottom content */}
         <div className="absolute inset-x-0 bottom-0 p-3 text-center text-white sm:p-4 lg:p-6">
@@ -58,9 +58,9 @@ export function ScormPreview({ course }: { course?: ApiCourse | null }) {
             {title}
           </h3>
 
-          <p className="mt-1 hidden text-sm text-white/90 sm:block">
+          {/* <p className="mt-1 hidden text-sm text-white/90 sm:block">
             Build skills. Inspire teams. Drive results.
-          </p>
+          </p> */}
 
           <div className="mt-1.5 hidden items-center justify-center gap-1 text-xs sm:mt-2 sm:flex sm:gap-1.5 sm:text-sm">
             <span className="text-[oklch(0.85_0.18_85)]">★★★★★</span>
@@ -74,7 +74,7 @@ export function ScormPreview({ course }: { course?: ApiCourse | null }) {
             onClick={handleStart}
             disabled={!course}
             size="sm"
-            className="mt-2 h-8 rounded-lg border-0 px-3 text-xs text-primary-foreground shadow-[var(--shadow-soft)] sm:mt-4 sm:h-9 sm:px-4 sm:text-sm lg:h-10"
+            className="mt-2 h-8 rounded-lg border-0 px-3 text-xs text-primary-foreground shadow-[var(--shadow-soft)] sm:mt-4 sm:h-9 sm:px-4 sm:text-sm lg:h-10 "
             style={{ backgroundImage: "var(--gradient-primary)" }}
           >
             <Play className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" />
