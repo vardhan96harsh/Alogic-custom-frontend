@@ -8,10 +8,10 @@ import { CoursesAPI, assetUrl } from "@/lib/api";
 export const Route = createFileRoute("/course/$id")({
   head: () => ({
     meta: [
-      { title: "Course Player — Alogic Data" },
+      { title: "Course Player — ALogicData" },
       {
         name: "description",
-        content: "Play SCORM course content in the Alogic Data LMS.",
+        content: "Play SCORM course content in the ALogicData LMS.",
       },
     ],
   }),

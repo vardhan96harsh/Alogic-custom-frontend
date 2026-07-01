@@ -10,8 +10,8 @@ import { AuthAPI } from "@/lib/api";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — Alogic Data" },
-      { name: "description", content: "Sign in to your Alogic Data admin dashboard." },
+      { title: "Login — ALogicData" },
+      { name: "description", content: "Sign in to your ALogicData admin dashboard." },
     ],
   }),
   component: LoginPage,
@@ -61,7 +61,7 @@ function LoginPage() {
           >
             <GraduationCap className="h-5 w-5" />
           </span>
-          <span className="text-lg font-semibold text-foreground">Alogic Data</span>
+          <span className="text-lg font-semibold text-foreground">ALogicData</span>
         </Link>
 
         <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-elevated)]">

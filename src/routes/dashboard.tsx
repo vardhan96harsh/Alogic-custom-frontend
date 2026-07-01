@@ -21,7 +21,7 @@ import DemoRequests from "@/components/site/DemoRequests";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — Alogic Data" },
+      { title: "Dashboard — ALogicData" },
       { name: "description", content: "Manage courses, uploads, and platform analytics." },
     ],
   }),
@@ -228,7 +228,7 @@ setCurriculum([]);
             >
               <GraduationCap className="h-5 w-5" />
             </span>
-            <span className="text-lg font-semibold text-foreground">Alogic Data Admin</span>
+            <span className="text-lg font-semibold text-foreground">ALogicData Admin</span>
           </Link>
           <Button variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
@@ -239,7 +239,7 @@ setCurriculum([]);
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Alogic Data LMS Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">ALogicData LMS Dashboard</h1>
           <p className="mt-1 text-muted-foreground">Overview of your learning platform.</p>
         </div>
 
