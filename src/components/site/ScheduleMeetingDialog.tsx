@@ -17,7 +17,7 @@ type ScheduleMeetingDialogProps = {
 };
 
 export function ScheduleMeetingDialog({
-  buttonText = "Schedule a Meeting",
+  buttonText = "Get LMS Demo",
 }: ScheduleMeetingDialogProps) {
   const [open, setOpen] = useState(false);
 

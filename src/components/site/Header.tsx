@@ -1,25 +1,29 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Calendar, Phone } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { ScheduleMeetingDialog } from "@/components/site/ScheduleMeetingDialog";
+import { useEffect } from "react";
 
 const COMPANY_WEBSITE = "https://alogicdata.com";
 
 export function Header() {
-  const scrollTo = (id: string) => (e: React.MouseEvent) => {
-    if (typeof document === "undefined") return;
-    const el = document.getElementById(id);
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === ",") {
+        e.preventDefault();
+        navigate({ to: "/login" });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
 
   return (
-    
-    <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-md border-b border-border/60 shadow-[var(--shadow-soft)]">
-      
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/95 shadow-[var(--shadow-soft)] backdrop-blur-md">
+      <div className="mx-auto flex h-14 items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-16">
         <a
           href={COMPANY_WEBSITE}
           target="_blank"
@@ -27,11 +31,15 @@ export function Header() {
           className="flex items-baseline gap-1.5"
           aria-label="Alogic Data"
         >
-          <span className="text-xl font-bold tracking-tight" style={{ color: "oklch(0.18 0.06 256)" }}>
+          <span
+            className="text-lg font-bold tracking-tight sm:text-xl"
+            style={{ color: "oklch(0.18 0.06 256)" }}
+          >
             Alogic
           </span>
+
           <span
-            className="text-xl font-bold tracking-tight bg-clip-text text-transparent"
+            className="bg-clip-text text-lg font-bold tracking-tight text-transparent sm:text-xl"
             style={{ backgroundImage: "var(--gradient-primary)" }}
           >
             Data
@@ -39,45 +47,19 @@ export function Header() {
         </a>
 
         <nav className="flex items-center gap-2 sm:gap-3">
-
-          {/* <Button
-            size="sm"
-            variant="outline"
-            onClick={scrollTo("courses")}
-            className="hidden sm:inline-flex border-primary/30 text-primary hover:bg-primary/5"
-          >
-            Visit Our LMS
-          </Button> */}
-    
-<div className="hidden md:inline-flex">
-  <ScheduleMeetingDialog
-    trigger={
-      <Button
-        size="sm"
-        className="text-primary-foreground border-0 shadow-[var(--shadow-soft)]"
-        style={{ backgroundImage: "var(--gradient-primary)" }}
-      >
-        <Calendar className="mr-1.5 h-3.5 w-3.5" />
-        Get LMS Demo
-      </Button>
-    }
-  />
-</div>
-          <Button
-            asChild
-            size="sm"
-            className="bg-foreground text-background hover:bg-foreground/90"
-          >
-            <a href="mailto:alogicdatavidisha@gmail.com">
-              <Phone className="mr-1.5 h-3.5 w-3.5" />
-              Contact Us
-            </a>
-          </Button>
-          <Link to="/login">
-            <Button variant="ghost" size="sm" className="text-foreground hidden md:block">
-              Login
-            </Button>
-          </Link>
+          <ScheduleMeetingDialog
+            trigger={
+              <Button
+                size="sm"
+                className="h-9 border-0 px-3 text-xs text-primary-foreground shadow-[var(--shadow-soft)] sm:px-4 sm:text-sm"
+                style={{ backgroundImage: "var(--gradient-primary)" }}
+              >
+                <Calendar className="mr-1.5 h-3.5 w-3.5" />
+                <span className="sm:hidden">Demo</span>
+                <span className="hidden sm:inline">Get LMS Demo</span>
+              </Button>
+            }
+          />
         </nav>
       </div>
     </header>

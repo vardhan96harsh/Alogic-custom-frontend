@@ -31,52 +31,43 @@ function CoursePlayerPage() {
   });
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+<div className="flex h-screen w-full max-w-full flex-col overflow-hidden bg-background">
+  <main className="flex h-full w-full max-w-full flex-col overflow-hidden px-3 py-3 sm:px-6 lg:px-8">
+    <Link
+      to="/"
+      className="mb-3 inline-flex shrink-0 items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      Back to courses
+    </Link>
 
-
-      <main className="w-full  ">
-        <Link
-          to="/"
-          className="mb-1 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to courses
-        </Link>
-
-        {isLoading ? (
-          <div className="flex items-center justify-center py-24 text-muted-foreground">
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Loading course…
-          </div>
-        ) : error || !course ? (
-          <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
-            Unable to load this course.
-          </div>
+    {isLoading ? (
+      <div className="flex flex-1 items-center justify-center text-muted-foreground">
+        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+        Loading course…
+      </div>
+    ) : error || !course ? (
+      <div className="rounded-2xl border border-border bg-card p-6 text-center text-sm text-muted-foreground sm:p-10">
+        Unable to load this course.
+      </div>
+    ) : (
+      <div className="min-h-0 flex-1 overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-elevated)] sm:rounded-2xl">
+        {course.launchUrl ? (
+          <iframe
+            src={assetUrl(course.launchUrl)}
+            title={course.title}
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            className="h-full w-full border-0"
+          />
         ) : (
-          <>
-
-
-            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-elevated)]">
-              {course.launchUrl ? (
-                <iframe
-                  src={assetUrl(course.launchUrl)}
-                  title={course.title}
-                  allow="autoplay; fullscreen"
-                  allowFullScreen
-                  className="block w-full"
-                  style={{ height: 700, border: 0 }}
-                />
-              ) : (
-                <div className="flex h-[700px] items-center justify-center text-muted-foreground">
-                  This course does not have a launch URL configured.
-                </div>
-              )}
-            </div>
-          </>
+          <div className="flex h-full items-center justify-center px-4 text-center text-sm text-muted-foreground">
+            This course does not have a launch URL configured.
+          </div>
         )}
-      </main>
-
-
-    </div>
+      </div>
+    )}
+  </main>
+</div>
   );
 }
